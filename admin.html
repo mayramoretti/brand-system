@@ -400,7 +400,10 @@ ${texto}`;
     body: JSON.stringify({contents:[{parts:[{text:prompt}]}]})
   });
   const data = await res.json();
-  const resposta = data.candidates[0].content.parts[0].text;
+  if (!data.candidates || !data.candidates[0]) {
+  throw new Error('Gemini sem resposta: ' + JSON.stringify(data));
+}
+const resposta = data.candidates[0].content.parts[0].text;
   return JSON.parse(resposta.replace(/```json|```/g,'').trim());
 }
 
