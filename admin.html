@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Brand System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#1A1714;
+  --bg2:#2A2724;
+  --bg3:#333030;
+  --ink:#F5F2EC;
+  --ink2:#9E9B97;
+  --ink3:#6B6760;
+  --accent:#C8401A;
+  --accent2:#E8B84B;
+  --green:#2D6A4F;
+  --green2:#52B788;
+  --border:#3A3735;
+}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  padding:40px 24px 80px;
+}
+.container{max-width:680px;margin:0 auto}
+
+/* HEADER */
+.header{margin-bottom:40px}
+.logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink2);
+  margin-bottom:8px;
+}
+.logo span{color:var(--accent)}
+h1{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:24px;
+  color:var(--ink);
+}
+
+/* SENHA */
+.login-screen{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:32px;
+  margin-top:40px;
+}
+.login-screen h2{font-size:16px;font-weight:500;margin-bottom:20px;color:var(--ink2)}
+
+/* FORM */
+.field{margin-bottom:20px}
+label{
+  display:block;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:8px;
+  font-weight:500;
+}
+input[type="text"],
+input[type="password"],
+textarea,
+select{
+  width:100%;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px 16px;
+  font-size:14px;
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  outline:none;
+  transition:border-color .15s;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus{border-color:var(--accent)}
+textarea{min-height:160px;resize:vertical;line-height:1.6}
+select option{background:var(--bg3)}
+
+/* BOTÕES */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 24px;
+  border-radius:8px;
+  border:none;
+  font-size:14px;
+  font-weight:500;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:opacity .15s;
+}
+.btn:hover{opacity:.85}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-green{background:var(--green);color:var(--green2)}
+.btn-ghost{background:var(--bg3);color:var(--ink2);border:1px solid var(--border)}
+.btn-sm{padding:8px 14px;font-size:12px}
+
+/* CARD DO FORM */
+.form-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  margin-bottom:16px;
+}
+.form-card h2{
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:24px;
+}
+
+/* TIPO SELECTOR */
+.tipo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:4px;
+}
+.tipo-btn{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 8px;
+  font-size:12px;
+  color:var(--ink2);
+  cursor:pointer;
+  text-align:center;
+  transition:all .15s;
+  font-family:'DM Sans',sans-serif;
+}
+.tipo-btn:hover{border-color:var(--accent);color:var(--ink)}
+.tipo-btn.ativo{border-color:var(--accent);background:rgba(200,64,26,.15);color:var(--accent)}
+
+/* PREVIEW */
+.preview-area{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px;
+  font-size:12px;
+  color:var(--ink3);
+  font-family:'Courier New',monospace;
+  line-height:1.6;
+  min-height:80px;
+  margin-top:8px;
+  white-space:pre-wrap;
+  word-break:break-all;
+}
+
+/* STATUS */
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 16px;
+  border-radius:8px;
+  font-size:13px;
+  margin-top:12px;
+  display:none;
+}
+.status.ok{background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.3);color:var(--green2)}
+.status.erro{background:rgba(200,64,26,.1);border:1px solid rgba(200,64,26,.3);color:#f08070}
+.status.carregando{background:var(--bg3);border:1px solid var(--border);color:var(--ink2)}
+
+/* BLOCOS PUBLICADOS */
+.blocos-lista{margin-top:8px}
+.bloco-item{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 16px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.bloco-info{flex:1;min-width:0}
+.bloco-titulo{font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bloco-meta{font-size:11px;color:var(--ink3);margin-top:3px}
+.bloco-tipo{
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:2px 7px;
+  color:var(--ink3);
+  white-space:nowrap;
+}
+.btn-delete{
+  background:none;
+  border:none;
+  color:var(--ink3);
+  cursor:pointer;
+  font-size:16px;
+  padding:4px;
+  transition:color .15s;
+}
+.btn-delete:hover{color:var(--accent)}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+/* HIDDEN */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">Brand<span>System</span> · <span style="color:var(--ink3)">Admin</span></div>
+    <h1>Publicar conteúdo</h1>
+  </div>
+
+  <!-- TELA DE SENHA -->
+  <div class="login-screen" id="login-screen">
+    <h2>🔒 Área restrita</h2>
+    <div class="field">
+      <label>Senha de acesso</label>
+      <input type="password" id="senha-input" placeholder="Digite a senha..." onkeydown="if(event.key==='Enter')entrar()">
+    </div>
+    <button class="btn btn-primary" onclick="entrar()">Entrar</button>
+    <div class="status erro" id="login-erro">Senha incorreta.</div>
+  </div>
+
+  <!-- PAINEL PRINCIPAL -->
+  <div id="painel" class="hidden">
+
+    <!-- FORM DE PUBLICAÇÃO -->
+    <div class="form-card">
+      <h2>Novo bloco</h2>
+
+      <div class="field">
+        <label>Label (ex: Pausa · Conceitos base)</label>
+        <input type="text" id="f-label" placeholder="Opcional — aparece acima do título">
+      </div>
+
+      <div class="field">
+        <label>Título do bloco</label>
+        <input type="text" id="f-titulo" placeholder="Ex: Identidade de marca, em 30 segundos">
+      </div>
+
+      <div class="field">
+        <label>Descrição</label>
+        <textarea id="f-descricao" placeholder="Texto introdutório do bloco..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Tipo de conteúdo</label>
+        <div class="tipo-grid">
+          <div class="tipo-btn ativo" onclick="setTipo('cards',this)">🃏 Cards</div>
+          <div class="tipo-btn" onclick="setTipo('alerta',this)">⚠️ Alerta</div>
+          <div class="tipo-btn" onclick="setTipo('prompt',this)">💬 Prompt</div>
+          <div class="tipo-btn" onclick="setTipo('aviso',this)">📌 Aviso</div>
+          <div class="tipo-btn" onclick="setTipo('texto',this)">📝 Texto</div>
+          <div class="tipo-btn" onclick="setTipo('ia',this)">✨ Gerar com IA</div>
+        </div>
+      </div>
+
+      <!-- Campos por tipo -->
+      <div id="campo-cards">
+        <div class="field">
+          <label>Conteúdo dos cards (cole o trecho da aula)</label>
+          <textarea id="f-texto-ia" placeholder="Cole aqui o trecho da aula ou descreva o que foi ensinado. A IA vai formatar em cards automaticamente." style="min-height:120px"></textarea>
+        </div>
+      </div>
+
+      <div id="campo-alerta" class="hidden">
+        <div class="field">
+          <label>Tag do alerta (ex: Muita atenção)</label>
+          <input type="text" id="f-alerta-tag" placeholder="Muita atenção">
+        </div>
+        <div class="field">
+          <label>Texto do alerta</label>
+          <textarea id="f-alerta-texto" placeholder="Texto em destaque..." style="min-height:80px"></textarea>
+        </div>
+      </div>
+
+      <div id="campo-prompt" class="hidden">
+        <div class="field">
+          <label>Label do prompt (ex: Prompt · Verificar conexão)</label>
+          <input type="text" id="f-prompt-label" placeholder="Prompt · ...">
+        </div>
+        <div class="field">
+          <label>Texto do prompt</label>
+          <textarea id="f-prompt-texto" placeholder="O prompt que os alunos vão copiar..." style="min-height:100px"></textarea>
+        </div>
+      </div>
+
+      <div id="campo-aviso" class="hidden">
+        <div class="field">
+          <label>Texto do aviso</label>
+          <textarea id="f-aviso-texto" placeholder="Texto informativo..." style="min-height:80px"></textarea>
+        </div>
+      </div>
+
+      <div id="campo-texto" class="hidden">
+        <div class="field">
+          <label>Texto livre</label>
+          <textarea id="f-texto-livre" placeholder="Texto corrido..." style="min-height:100px"></textarea>
+        </div>
+      </div>
+
+      <div id="campo-ia" class="hidden">
+        <div class="field">
+          <label>Cole o trecho da aula</label>
+          <textarea id="f-trecho-ia" placeholder="Cole aqui o que foi dito na aula. A IA vai identificar o tipo de bloco e formatar automaticamente." style="min-height:140px"></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="publicar()" id="btn-publicar">
+        ✦ Publicar no site
+      </button>
+
+      <div class="status" id="status-publicar"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- BLOCOS PUBLICADOS -->
+    <div class="form-card">
+      <h2>Blocos publicados <button class="btn btn-ghost btn-sm" onclick="carregarBlocos()" style="margin-left:8px">↻ Atualizar</button></h2>
+      <div class="blocos-lista" id="blocos-lista">
+        <div style="color:var(--ink3);font-size:13px">Carregando...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://jopjcsadilcgsdadhrfz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ed4KOU0afYspiT_jcGeS9g_hPU8uof_';
+const SENHA = 'brandsystem2024';
+const GEMINI_KEY = 'COLE_SUA_CHAVE_GEMINI_AQUI';
+
+let tipoAtual = 'cards';
+
+function entrar() {
+  const s = document.getElementById('senha-input').value;
+  if (s === SENHA) {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('painel').classList.remove('hidden');
+    carregarBlocos();
+  } else {
+    const err = document.getElementById('login-erro');
+    err.style.display = 'flex';
+  }
+}
+
+function setTipo(tipo, el) {
+  tipoAtual = tipo;
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('ativo'));
+  el.classList.add('ativo');
+  ['cards','alerta','prompt','aviso','texto','ia'].forEach(t => {
+    document.getElementById('campo-'+t).classList.add('hidden');
+  });
+  document.getElementById('campo-'+tipo).classList.remove('hidden');
+}
+
+async function gerarCardsComIA(texto) {
+  const prompt = `Você é um assistente que formata conteúdo de workshops em cards educativos.
+
+Dado o trecho abaixo de uma aula, gere de 2 a 4 cards no formato JSON.
+Cada card deve ter: tag (categoria curta), titulo (máx 5 palavras), corpo (2-3 frases explicativas).
+
+Responda APENAS com JSON válido, sem markdown, no formato:
+[{"tag":"...","titulo":"...","corpo":"..."}]
+
+Trecho da aula:
+${texto}`;
+
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+  });
+  const data = await res.json();
+  const resposta = data.candidates[0].content.parts[0].text;
+  return JSON.parse(resposta.replace(/```json|```/g,'').trim());
+}
+
+async function publicar() {
+  const btn = document.getElementById('btn-publicar');
+  const status = document.getElementById('status-publicar');
+
+  const titulo = document.getElementById('f-titulo').value.trim();
+  if (!titulo) {
+    mostrarStatus('erro', 'Preencha o título do bloco.');
+    return;
+  }
+
+  btn.textContent = '⏳ Publicando...';
+  btn.disabled = true;
+  mostrarStatus('carregando', 'Processando...');
+
+  try {
+    let conteudo = null;
+
+    if (tipoAtual === 'cards') {
+      const textoIA = document.getElementById('f-texto-ia').value.trim();
+      if (!textoIA) { mostrarStatus('erro','Cole o trecho da aula.'); btn.textContent='✦ Publicar no site'; btn.disabled=false; return; }
+      if (GEMINI_KEY === 'COLE_SUA_CHAVE_GEMINI_AQUI') {
+        conteudo = [
+          {tag:'Conceito', titulo: titulo, corpo: textoIA.substring(0, 120)}
+        ];
+      } else {
+        mostrarStatus('carregando', '✨ Gerando cards com Gemini...');
+        conteudo = await gerarCardsComIA(textoIA);
+      }
+    } else if (tipoAtual === 'alerta') {
+      conteudo = {
+        tag: document.getElementById('f-alerta-tag').value || 'Atenção',
+        texto: document.getElementById('f-alerta-texto').value
+      };
+    } else if (tipoAtual === 'prompt') {
+      conteudo = {
+        label: document.getElementById('f-prompt-label').value || 'Prompt',
+        texto: document.getElementById('f-prompt-texto').value
+      };
+    } else if (tipoAtual === 'aviso') {
+      conteudo = { texto: document.getElementById('f-aviso-texto').value };
+    } else if (tipoAtual === 'texto') {
+      conteudo = { texto: document.getElementById('f-texto-livre').value };
+    } else if (tipoAtual === 'ia') {
+      const trecho = document.getElementById('f-trecho-ia').value.trim();
+      if (!trecho) { mostrarStatus('erro','Cole o trecho da aula.'); btn.textContent='✦ Publicar no site'; btn.disabled=false; return; }
+      mostrarStatus('carregando', '✨ Gerando com Gemini...');
+      conteudo = await gerarCardsComIA(trecho);
+      tipoAtual = 'cards';
+    }
+
+    mostrarStatus('carregando', '💾 Salvando no banco...');
+
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blocos`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        label: document.getElementById('f-label').value.trim() || null,
+        titulo: titulo,
+        descricao: document.getElementById('f-descricao').value.trim() || null,
+        tipo: tipoAtual,
+        conteudo: conteudo
+      })
+    });
+
+    if (res.ok) {
+      mostrarStatus('ok', '✅ Publicado! Aparece no site em até 10 segundos.');
+      limparForm();
+      carregarBlocos();
+    } else {
+      const err = await res.text();
+      mostrarStatus('erro', 'Erro ao salvar: ' + err);
+    }
+  } catch(e) {
+    mostrarStatus('erro', 'Erro: ' + e.message);
+  }
+
+  btn.textContent = '✦ Publicar no site';
+  btn.disabled = false;
+}
+
+function mostrarStatus(tipo, msg) {
+  const el = document.getElementById('status-publicar');
+  el.className = 'status ' + tipo;
+  el.style.display = 'flex';
+  el.textContent = msg;
+}
+
+function limparForm() {
+  document.getElementById('f-label').value = '';
+  document.getElementById('f-titulo').value = '';
+  document.getElementById('f-descricao').value = '';
+  document.getElementById('f-texto-ia').value = '';
+  document.getElementById('f-alerta-texto').value = '';
+  document.getElementById('f-prompt-texto').value = '';
+  document.getElementById('f-aviso-texto').value = '';
+  document.getElementById('f-texto-livre').value = '';
+  document.getElementById('f-trecho-ia').value = '';
+}
+
+async function carregarBlocos() {
+  const lista = document.getElementById('blocos-lista');
+  lista.innerHTML = '<div style="color:var(--ink3);font-size:13px">Carregando...</div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blocos?select=*&order=criado_em.desc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const blocos = await res.json();
+    if (!blocos.length) {
+      lista.innerHTML = '<div style="color:var(--ink3);font-size:13px">Nenhum bloco publicado ainda.</div>';
+      return;
+    }
+    lista.innerHTML = blocos.map(b => `
+      <div class="bloco-item">
+        <div class="bloco-info">
+          <div class="bloco-titulo">${b.titulo}</div>
+          <div class="bloco-meta">${new Date(b.criado_em).toLocaleString('pt-BR')}</div>
+        </div>
+        <span class="bloco-tipo">${b.tipo}</span>
+        <button class="btn-delete" onclick="deletar('${b.id}')" title="Remover">✕</button>
+      </div>
+    `).join('');
+  } catch(e) {
+    lista.innerHTML = '<div style="color:var(--ink3);font-size:13px">Erro ao carregar.</div>';
+  }
+}
+
+async function deletar(id) {
+  if (!confirm('Remover este bloco do site?')) return;
+  await fetch(`${SUPABASE_URL}/rest/v1/blocos?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  carregarBlocos();
+}
+</script>
+</body>
+</html>
